@@ -1,19 +1,10 @@
 library(dplyr)
 
-undergrad_data <- read.csv("~/R_Code/Shiny_App/undergrad.csv", stringsAsFactors = FALSE)
+# Read pre-processed file into global environment
+undergrad_data = readRDS(file = "~/R_Code/Shiny_App/undergrad.Rda")
 
-# undergrad$avg_tuition = as.numeric(undergrad$avg_tuition)
-# undergrad$avg_cost = as.numeric(undergrad$avg_cost)
-# undergrad$md_debt = as.numeric(undergrad$md_debt)
-# undergrad$md_earnings_10 = as.numeric(undergrad$md_earnings_10)
-# undergrad$pct_25k = as.numeric(undergrad$pct_25k)
-# undergrad$default_rate = as.numeric(undergrad$default_rate)
-# undergrad$comp_deg = as.numeric(undergrad$comp_deg)
-# undergrad$eng_deg = as.numeric(undergrad$eng_deg)
-# undergrad$engtech_deg = as.numeric(undergrad$engtech_deg)
-# undergrad$math_deg = as.numeric(undergrad$math_deg)
-# undergrad$sci_deg = as.numeric(undergrad$sci_deg)
-undergrad_data$school_type = as.factor(undergrad_data$school_type)
 
-#undergrad = undergrad %>% filter(., !is.na(MD_EARN_WNE_P10)) 
+# undergrad_table = undergrad_data %>% select(., College = college, State = state, `Admission Rate` = adm_rate, `Average Total Cost` = avg_cost, `Average Tuition` = avg_tuition, `Student Population` = population, `Students With Loans` = pct_loan, `Median Debt` = md_debt, `Median Earnings` = md_earnings_10, `Comp Sci Majors` = comp_deg,`Math Majors` = math_deg)
+
+# undergrad = undergrad %>% filter(., !is.na(MD_EARN_WNE_P10)) 
 
