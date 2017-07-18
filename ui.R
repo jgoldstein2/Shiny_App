@@ -3,12 +3,16 @@ library(ggplot2)
 library(shinydashboard)
 library(googleVis)
 library(shinythemes)
+library(leaflet)
+library(DT)
+library(maps)
+library(plotly)
 
 shinyUI(dashboardPage(skin = "red",
   dashboardHeader(title = "College Scorecard Data", titleWidth = 250),
   dashboardSidebar(
     sidebarUserPanel("",
-                     image = "https://upload.wikimedia.org/wikipedia/commons/a/ad/Seal_of_the_United_States_Department_of_Education.svg"),
+                     image = "http://dasycenter.org/wp-content/uploads/2015/01/doed-logo.gif"),
     sidebarMenu(
       menuItem("Explore Data", tabName = "table", icon = icon("table")), 
       menuItem("Data by College", tabName = "scatter", icon = icon("line-chart")),
@@ -17,6 +21,9 @@ shinyUI(dashboardPage(skin = "red",
       )
     ),
   dashboardBody(
+    tags$head(
+      tags$link(rel="stylesheet", type="text/css", href="custom.css")
+    ),
     tabItems(
      
        tabItem(tabName = "table",

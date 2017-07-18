@@ -9,14 +9,7 @@ library(leaflet)
 library(plotly)
 
 function(input, output) {
-  # Select and rename columns to create df for user interface datatable
-  undergrad_table = undergrad_data %>% select(., College = college, State = state, 
-                                              `Admission Rate` = adm_rate, `Average Total Cost` = avg_cost, 
-                                              `Average Tuition` = avg_tuition, `Student Population` = population, 
-                                              `Students With Loans` = pct_loan, `Median Debt` = md_debt, 
-                                              `Median Earnings` = md_earnings_10, `Comp Sci Majors` = comp_deg,
-                                              `Math Majors` = math_deg)
-    
+
   # Create datatable for user interface
   output$table <- DT::renderDataTable({
     
@@ -37,7 +30,9 @@ function(input, output) {
   
   
   # Select and rename columns to create df for user interface density plot
-  density_data = undergrad_data %>% select(., school_type, `Median Family Income` = md_fam_inc, `Students on Loans (%)` = pct_loan, `Median Debt` = md_debt, `Default Rate (%)` = default_rate, `Repayment Rate` = repay_rate, `Median Earnings` = md_earnings_10)
+  density_data = undergrad_data %>% select(., school_type, `Median Family Income` = md_fam_inc, `Students on Loans (%)` = pct_loan, 
+                                           `Median Debt` = md_debt, `Default Rate (%)` = default_rate, `Repayment Rate` = repay_rate, 
+                                           `Median Earnings` = md_earnings_10)
   
   output$densityPlot <- renderPlotly({
     
@@ -51,9 +46,9 @@ function(input, output) {
     density3 <- density(school3[[input$density]], na.rm = TRUE)
     
     # Use plotly to create density plot w/ user input and group data by school type
-    plot_ly(x = ~density1$x, y = ~density1$y, type = 'scatter', mode = 'lines', name = 'Public', line = list(color = "#3e6def") , fill = 'tozeroy') %>%
-      add_trace(x = ~density2$x, y = ~density2$y, name = 'Private', line = list(color = "#FA0905"), fill = 'tozeroy') %>%
-      add_trace(x = ~density3$x, y = ~density3$y, name = 'For-Profit', line = list(color = "#fcf523"), fill = 'tozeroy') %>%
+    plot_ly(x = ~density1$x, y = ~density1$y, type = 'scatter', mode = 'lines', name = 'Public',  hoverinfo = 'text', text = 'Public', line = list(color = "#3e6def") , fill = 'tozeroy') %>%
+      add_trace(x = ~density2$x, y = ~density2$y, name = 'Private', line = list(color = "#FA0905"), hoverinfo = 'text', text = 'Private',  fill = 'tozeroy') %>%
+      add_trace(x = ~density3$x, y = ~density3$y, name = 'For-Profit', line = list(color = "#fcf523"), hoverinfo = 'text', text = 'For-Profit',  fill = 'tozeroy') %>%
       layout(title= "<b>Density Plot by School Type</b>", titlefont=list(size=14),
              autosize = F, width = 1050, height = 500,
              margin = list(l = 75, r = 75, b = 75, t = 75, pad = 4),
@@ -62,7 +57,10 @@ function(input, output) {
   })
   
   # Group data by state and calcuate average debt, cost, and earnings for each state
-  cost_by_state = undergrad_data %>% group_by(., state) %>% summarise(., Debt = round(mean(md_debt, na.rm = TRUE)), Cost = round(mean(avg_cost, na.rm = TRUE)), Earnings = round(mean(md_earnings_10, na.rm = TRUE)), Default = round(mean(default_rate, na.rm = TRUE),2))
+  cost_by_state = undergrad_data %>% group_by(., state) %>% summarise(., Debt = round(mean(md_debt, na.rm = TRUE)), 
+                                                                      Cost = round(mean(avg_cost, na.rm = TRUE)), 
+                                                                      Earnings = round(mean(md_earnings_10, na.rm = TRUE)), 
+                                                                      Default = round(mean(default_rate, na.rm = TRUE),2))
   mapStates = map("state", fill = TRUE, plot = FALSE)
   
   names(cost_by_state)[1] <-'state.abb' #Prepare data for mapping by creating column with full state name
